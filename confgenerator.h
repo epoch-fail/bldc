@@ -9,7 +9,8 @@
 
 // Constants
 #define MCCONF_SIGNATURE		2211848314
-#define APPCONF_SIGNATURE		3264926020
+//#define APPCONF_SIGNATURE		3264926020  // old signature
+#define APPCONF_SIGNATURE       1453792260  // new signature with alternator
 
 // Functions
 int32_t confgenerator_serialize_mcconf(uint8_t *buffer, const mc_configuration *conf);

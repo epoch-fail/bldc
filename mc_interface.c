@@ -91,6 +91,9 @@ static volatile motor_if_state_t m_motor_1;
 static volatile motor_if_state_t m_motor_2;
 #endif
 
+/// KBM
+static volatile int msg_cnt = 0;
+
 // Sampling variables
 #define ADC_SAMPLE_MAX_LEN		2000
 __attribute__((section(".ram4"))) static volatile int16_t m_curr0_samples[ADC_SAMPLE_MAX_LEN];
@@ -2245,8 +2248,13 @@ static THD_FUNCTION(timer_thread, arg) {
 	chRegSetThreadName("mcif timer");
 
 	for(;;) {
+
+		//commands_printf("%i, timer %d",msg_cnt++, mc_interface_motor_now());
+
 		run_timer_tasks(&m_motor_1);
 #ifdef HW_HAS_DUAL_MOTORS
+		//commands_printf("%i, timer %d",msg_cnt++, mc_interface_motor_now());
+
 		run_timer_tasks(&m_motor_2);
 #endif
 

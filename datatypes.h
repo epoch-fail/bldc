@@ -461,6 +461,12 @@ typedef enum {
 	THR_EXP_POLY
 } thr_exp_mode;
 
+typedef enum {
+    ALTERNATOR_MODE_SKATEBOARD = 0,
+    ALTERNATOR_MODE_MANUAL_ALTERNATING,
+    ALTERNATOR_MODE_AUTO_ALTERNATING
+} alternator_mode;
+
 // PPM control types
 typedef enum {
 	PPM_CTRL_TYPE_NONE = 0,
@@ -576,6 +582,13 @@ typedef struct {
 	float smart_rev_max_duty;
 	float smart_rev_ramp_time;
 } chuk_config;
+
+typedef struct {
+    alternator_mode alt_mode;
+    uint16_t cycle_time_ms;
+    float cycle_peak_percent;
+    float cycle_trough_percent;
+} alternator_config;
 
 typedef struct {
 	pas_control_type ctrl_type;
@@ -787,6 +800,9 @@ typedef struct {
 
 	// Nunchuk application settings
 	chuk_config app_chuk_conf;
+
+	// Alternator application settings
+    alternator_config app_alternator_conf;
 
 	// NRF application settings
 	nrf_config app_nrf_conf;

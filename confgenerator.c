@@ -224,6 +224,7 @@ int32_t confgenerator_serialize_appconf(uint8_t *buffer, const app_configuration
 	buffer_append_float32_auto(buffer, conf->app_adc_conf.tc_max_diff, &ind);
 	buffer_append_uint16(buffer, conf->app_adc_conf.update_rate_hz, &ind);
 	buffer_append_uint32(buffer, conf->app_uart_baudrate, &ind);
+
 	buffer[ind++] = conf->app_chuk_conf.ctrl_type;
 	buffer_append_float32_auto(buffer, conf->app_chuk_conf.hyst, &ind);
 	buffer_append_float32_auto(buffer, conf->app_chuk_conf.ramp_time_pos, &ind);
@@ -238,7 +239,14 @@ int32_t confgenerator_serialize_appconf(uint8_t *buffer, const app_configuration
 	buffer[ind++] = conf->app_chuk_conf.use_smart_rev;
 	buffer_append_float32_auto(buffer, conf->app_chuk_conf.smart_rev_max_duty, &ind);
 	buffer_append_float32_auto(buffer, conf->app_chuk_conf.smart_rev_ramp_time, &ind);
-	buffer[ind++] = conf->app_nrf_conf.speed;
+
+	// Alternator configuration
+    buffer[ind++] = conf->app_alternator_conf.alt_mode;
+    buffer_append_uint16(buffer, conf->app_alternator_conf.cycle_time_ms, &ind);
+    buffer_append_float32_auto(buffer, conf->app_alternator_conf.cycle_peak_percent, &ind);
+    buffer_append_float32_auto(buffer, conf->app_alternator_conf.cycle_trough_percent, &ind);
+
+    buffer[ind++] = conf->app_nrf_conf.speed;
 	buffer[ind++] = conf->app_nrf_conf.power;
 	buffer[ind++] = conf->app_nrf_conf.crc_type;
 	buffer[ind++] = conf->app_nrf_conf.retry_delay;
@@ -548,6 +556,7 @@ bool confgenerator_deserialize_appconf(const uint8_t *buffer, app_configuration 
 	conf->app_adc_conf.tc_max_diff = buffer_get_float32_auto(buffer, &ind);
 	conf->app_adc_conf.update_rate_hz = buffer_get_uint16(buffer, &ind);
 	conf->app_uart_baudrate = buffer_get_uint32(buffer, &ind);
+
 	conf->app_chuk_conf.ctrl_type = buffer[ind++];
 	conf->app_chuk_conf.hyst = buffer_get_float32_auto(buffer, &ind);
 	conf->app_chuk_conf.ramp_time_pos = buffer_get_float32_auto(buffer, &ind);
@@ -562,6 +571,13 @@ bool confgenerator_deserialize_appconf(const uint8_t *buffer, app_configuration 
 	conf->app_chuk_conf.use_smart_rev = buffer[ind++];
 	conf->app_chuk_conf.smart_rev_max_duty = buffer_get_float32_auto(buffer, &ind);
 	conf->app_chuk_conf.smart_rev_ramp_time = buffer_get_float32_auto(buffer, &ind);
+
+    // Alternator configuration
+	conf->app_alternator_conf.alt_mode = buffer[ind++];
+    conf->app_alternator_conf.cycle_time_ms = buffer_get_uint16(buffer, &ind);
+    conf->app_alternator_conf.cycle_peak_percent = buffer_get_float32_auto(buffer, &ind);
+    conf->app_alternator_conf.cycle_trough_percent = buffer_get_float32_auto(buffer, &ind);
+
 	conf->app_nrf_conf.speed = buffer[ind++];
 	conf->app_nrf_conf.power = buffer[ind++];
 	conf->app_nrf_conf.crc_type = buffer[ind++];
@@ -870,6 +886,13 @@ void confgenerator_set_defaults_appconf(app_configuration *conf) {
 	conf->app_chuk_conf.use_smart_rev = APPCONF_CHUK_USE_SMART_REV;
 	conf->app_chuk_conf.smart_rev_max_duty = APPCONF_CHUK_SMART_REV_MAX_DUTY;
 	conf->app_chuk_conf.smart_rev_ramp_time = APPCONF_CHUK_SMART_REV_RAMP_TIME;
+
+	// Alternator config
+	conf->app_alternator_conf.alt_mode = APPCONF_ALTERNATOR_MODE;
+    conf->app_alternator_conf.cycle_time_ms = APPCONF_ALTERNATOR_CYCLE_TIME_MS;
+    conf->app_alternator_conf.cycle_peak_percent = APPCONF_ALTERNATOR_CYCLE_PEAK_PERCENT;
+    conf->app_alternator_conf.cycle_trough_percent = APPCONF_ALTERNATOR_CYCLE_TROUGH_PRECENT;
+
 	conf->app_nrf_conf.speed = APPCONF_NRF_SPEED;
 	conf->app_nrf_conf.power = APPCONF_NRF_POWER;
 	conf->app_nrf_conf.crc_type = APPCONF_NRF_CRC;

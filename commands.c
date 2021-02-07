@@ -621,6 +621,8 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 		send_func_can_fwd = reply_func;
 
 #ifdef HW_HAS_DUAL_MOTORS
+		// KBM: might need insertion.  Does the second controller use CANbus?
+		// re-enters the function with the second motor selected
 		if (data[0] == utils_second_motor_id()) {
 			mc_interface_select_motor_thread(2);
 			commands_process_packet(data + 1, len - 1, reply_func);
@@ -634,6 +636,11 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 	} break;
 
 	case COMM_SET_CHUCK_DATA: {
+		// KBM. Unclear if this is setting data back to the nunchuk, or if it's setting the control up.
+		// I think it's the latter, and this is processing input from the nunchuk
+		// js - joystick
+		// bt - button C or button Z
+		// acc - accelerometer values.  Unclear if Flipsky VX2 has this.
 		chuck_data chuck_d_tmp;
 
 		int32_t ind = 0;

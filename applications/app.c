@@ -142,6 +142,7 @@ void app_set_configuration(app_configuration *conf) {
 	app_adc_configure(&appconf.app_adc_conf);
 	app_pas_configure(&appconf.app_pas_conf);
 	app_uartcomm_configure(appconf.app_uart_baudrate, appconf.permanent_uart_enabled);
+	//app_nunchuk_configure(&appconf.app_chuk_conf, &appconf.app_alternator_conf);
 	app_nunchuk_configure(&appconf.app_chuk_conf);
 
 #ifdef APP_CUSTOM_TO_USE

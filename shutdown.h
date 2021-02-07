@@ -34,7 +34,7 @@
 #define SHUTDOWN_SET_SAMPLING_DISABLED(d)
 #endif
 
-// Fucntions
+// Functions
 void shutdown_init(void);
 void shutdown_reset_timer(void);
 bool shutdown_button_pressed(void);
