@@ -15,6 +15,34 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Alternator code:
+     - the alternator is a start towards allowing alternating controls with the nunchuk
+     controller.  The idea is that pushing up on the stick controls one side/motor
+     and pulling down controls the other side/motor.  In the test configuration
+     the motors were required to run in opposite directions.  Depending on your VESC
+     you may need to set one motor to run in reverse direction from the VESC tool.
+     - there is a scaffold for allowing switching between three different alternating
+     modes:
+         - skateboard, where both motors run at the same time,
+         - manual alternating, where the nunchuk control is as described
+         - auto-alternating, where the speed control follows a sinusoidal action in
+           terms of speed and still allows reverse.
+     Unfortunately this mode was not completed.
+
+     The alternating modes have only been tested on Stormcore 60D.
+
+     One of the major changes below was to split out the motor control from the main
+     nunchuk app and into a separate function that takes the motor number as an input.
+     This is the key which allows us to control the motors independently.
+
+     Note that there is also a partial implementation of the VESC tool build which
+     is required to sync up with this version of BLDC as the serial signature
+     has been changed to accomdate the new controls.  This build can be found in
+     my epoch-fail/vesc_tool fork, same branch name.
+     This build was tested using the desktop version of the VESC tool but has not yet
+     been side loaded to an Android device.
+
     */
 
 #include "app.h"
